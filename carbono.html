@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Pegada de Carbono | Verde Tech</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="imagens/logo.png" alt="Logo Verde Tech - Voltar ao Início" class="logo">
+        </div>
+        <nav>
+            <a href="index.html"><i class="fas fa-home"></i> Início</a>
+            <a href="curiosidades.html"><i class="fas fa-robot"></i> Curiosidades</a>
+            <a href="maquete.html"><i class="fas fa-project-diagram"></i> Maquete</a>
+            <a href="carbono.html" class="active"><i class="fas fa-calculator"></i> Calculadora</a>
+            <a href="quiz.html"><i class="fas fa-question"></i> Quiz</a>
+            <a href="/minha-conta"><i class="fas fa-user-circle"></i> Minha conta</a>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <h1>Calculadora de Pegada de Carbono</h1>
+        <p>Descubra seu impacto ambiental e veja como pode contribuir para um planeta mais sustentável.</p>
+    </div>
+
+    <main>
+        <section class="intro-section">
+            <div class="container">
+                <p>A pegada de carbono representa a quantidade de gases de efeito estufa emitidos direta ou indiretamente por uma pessoa, organização ou produto.</p>
+                <p>Preencha os campos abaixo com seus dados aproximados para calcular seu impacto ambiental anual. Quanto menor o resultado, melhor!</p>
+            </div>
+        </section>
+
+        <section class="calculator-section">
+            <div class="container">
+                <div class="calculator-card">
+                    <h2 class="section-title">Sua Pegada de Carbono</h2>
+                    
+                    <form id="carbon-calculator">
+                        <div class="form-group">
+                            <label for="energy">Consumo mensal de energia (kWh):</label>
+                            <input type="number" id="energy" min="0" placeholder="Ex: 200">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="transport">Quilômetros percorridos por mês (carro):</label>
+                            <input type="number" id="transport" min="0" placeholder="Ex: 500">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="meat">Refeições com carne por semana:</label>
+                            <input type="number" id="meat" min="0" max="21" placeholder="Ex: 7">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="waste">Produção de lixo (kg por semana):</label>
+                            <input type="number" id="waste" min="0" placeholder="Ex: 5">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="flights">Voos de longa distância por ano:</label>
+                            <input type="number" id="flights" min="0" placeholder="Ex: 2">
+                        </div>
+                        
+                        <button type="button" id="calculate-btn" class="btn-calculate">Calcular Pegada</button>
+                    </form>
+                    
+                    <div class="result-container" id="result-container">
+                        <h3>Resultado:</h3>
+                        <div class="carbon-result" id="carbon-result">0.00 toneladas de CO₂/ano</div>
+                        <div class="result-message" id="result-message"></div>
+                        
+                        <div class="tips-container" id="tips-container">
+                            <h4>Dicas para reduzir sua pegada:</h4>
+                            <ul>
+                                <li>Use transporte público ou bicicleta sempre que possível</li>
+                                <li>Reduza o consumo de carne</li>
+                                <li>Economize energia em casa</li>
+                                <li>Recicle e reduza o desperdício</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Verde Tech - Cidade Sustentável do Futuro - Desenvolvido por Guilherme Navasconi e Daniel Martins.</p>
+        </div>
+    </footer>
+
+    <script src="carbono.js"></script>
+</body>
+</html>

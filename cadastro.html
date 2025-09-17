@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Conta | VerdeTech</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .auth-page{background:#f9f9f9}
+        .auth-container{max-width:520px;margin:32px;background:#fff;border-radius:12px;padding:28px;color:#0d3010;box-shadow:0 8px 22px rgba(0,0,0,.12);border:2px solid #1a5b1f}
+        .auth-main{display:flex;justify-content:center;align-items:center;min-height:calc(100vh - 200px);}
+        .auth-container h1{margin:0 0 8px 0}
+        .auth-container p.helper{margin:0 0 16px 0;color:#2c4730}
+        .auth-container form{display:flex;flex-direction:column;gap:14px}
+        .auth-container label{font-weight:600}
+        .auth-container input{padding:12px;border-radius:10px;border:2px solid #1a5b1f;background:#fff;color:#0d3010}
+        .auth-container input::placeholder{color:#567a5a}
+        .auth-container input:focus{outline:none;border-color:#2f9e44;box-shadow:0 0 0 3px rgba(47,158,68,.18)}
+        .auth-container .error{background:#ffebee;color:#8a1c1c;padding:10px;border-radius:8px;border:1px solid #e57373}
+        .auth-container .btn{background:transparent;color:#0d3010;border:2px solid #1a5b1f;border-radius:10px;padding:12px;cursor:pointer;text-align:center}
+        .auth-container .btn:hover{background:#eaf5ec}
+        .auth-container .req{font-size:12px;color:#2c4730;line-height:1.5}
+        .auth-container .req li{margin-left:18px}
+        .text-center{text-align:center}
+        a.link{color:#1a5b1f}
+        .btn-row{display:flex;gap:12px}
+        .input-group{position:relative}
+        .toggle-eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;color:#1a5b1f;border:2px solid #1a5b1f;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+        .toggle-eye:focus{outline:none;box-shadow:0 0 0 3px rgba(47,158,68,.18)}
+    </style>
+    <script>
+        function validatePasswordStrength(p){
+            if(!p) return false;
+            if(p.length < 8) return false;
+            const hasLower = /[a-z]/.test(p);
+            const hasUpper = /[A-Z]/.test(p);
+            return hasLower && hasUpper;
+        }
+        function onInputPassword(){
+            const pwd = document.getElementById('password').value;
+            const meter = document.getElementById('pwd-meter');
+            const tip = document.getElementById('pwd-tip');
+            const ok = validatePasswordStrength(pwd);
+            meter.textContent = ok ? 'Senha forte ✔' : 'Senha fraca';
+            meter.style.color = ok ? '#7CFC00' : '#FFD700';
+            tip.style.display = ok ? 'none' : 'block';
+        }
+        function onSubmitForm(e){
+            const form = e.target;
+            const nome = form.nome.value.trim();
+            const email = form.email.value.trim();
+            const password = form.password.value;
+            const confirm = form.confirm_password.value;
+            if(!nome || !email || !password || !confirm){
+                e.preventDefault();
+                alert('Preencha todos os campos');
+                return false;
+            }
+            if(!validatePasswordStrength(password)){
+                e.preventDefault();
+                alert('A senha deve ter no mínimo 8 caracteres, com letras maiúsculas e minúsculas.');
+                return false;
+            }
+            if(password !== confirm){
+                e.preventDefault();
+                alert('As senhas não conferem');
+                return false;
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function(){
+            var pwd = document.getElementById('password');
+            if(pwd){ pwd.addEventListener('input', onInputPassword); }
+            var form = document.getElementById('form-cadastro');
+            if(form){ form.addEventListener('submit', onSubmitForm); }
+            function wireToggle(btnId, inputId){
+                var btn = document.getElementById(btnId);
+                var input = document.getElementById(inputId);
+                if(btn && input){
+                    btn.addEventListener('click', function(){
+                        var isPwd = input.getAttribute('type') === 'password';
+                        input.setAttribute('type', isPwd ? 'text' : 'password');
+                        var icon = btn.querySelector('i');
+                        if(icon){ icon.classList.toggle('fa-eye'); icon.classList.toggle('fa-eye-slash'); }
+                        btn.setAttribute('aria-label', isPwd ? 'Ocultar senha' : 'Mostrar senha');
+                        btn.setAttribute('title', isPwd ? 'Ocultar senha' : 'Mostrar senha');
+                    });
+                }
+            }
+            wireToggle('togglePassword1','password');
+            wireToggle('togglePassword2','confirm_password');
+        });
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-page">
+    <header>
+        <div class="logo-container">
+            <a href="/" title="Voltar ao início"><img src="imagens/logo.png" alt="Logo Verde Tech" class="logo"></a>
+        </div>
+        <nav>
+            <a href="/"><i class="fas fa-home"></i> Início</a>
+            <a href="/minha-conta"><i class="fas fa-user-circle"></i> Minha conta</a>
+        </nav>
+    </header>
+    <main class="auth-main">
+        <div class="auth-container">
+            <h1>Criar conta</h1>
+            <p class="helper">Preencha seus dados para participar da VerdeTech.</p>
+            <div class="error" id="error-box" style="display:none">{{ error }}</div>
+            <form id="form-cadastro" method="POST" action="{{ url_for('register') }}" novalidate>
+                <div>
+                    <label for="nome">Nome completo</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+                <div>
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div>
+                    <label for="password">Senha</label>
+                    <div class="input-group">
+                        <input type="password" id="password" name="password" required minlength="8" pattern="(?=.*[a-z])(?=.*[A-Z]).{8,}" style="padding-right:46px;">
+                        <button type="button" id="togglePassword1" class="toggle-eye" aria-label="Mostrar senha" title="Mostrar senha">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                    <div id="pwd-meter" class="text-center" style="margin-top:6px;">Senha fraca</div>
+                    <ul class="req" id="pwd-tip">
+                        <li>Mínimo de 8 caracteres</li>
+                        <li>Obrigatório letras maiúsculas e minúsculas</li>
+                    </ul>
+                </div>
+                <div>
+                    <label for="confirm_password">Confirmar senha</label>
+                    <div class="input-group">
+                        <input type="password" id="confirm_password" name="confirm_password" required style="padding-right:46px;">
+                        <button type="button" id="togglePassword2" class="toggle-eye" aria-label="Mostrar senha" title="Mostrar senha">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="btn-row" style="margin-top:6px;">
+                    <a class="btn" href="{{ url_for('login') }}" style="flex:1;text-decoration:none;display:inline-block;text-align:center;">Voltar ao login</a>
+                    <button type="submit" class="btn" style="flex:1;">Criar conta</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Verde Tech - Cidade Sustentável do Futuro - Desenvolvido por Guilherme Navasconi e Daniel Martins.</p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+    <script>
+    (function(){
+        var el = document.getElementById('error-box');
+        if (el){
+            var txt = (el.textContent || '').trim();
+            if (txt && txt.indexOf('{{') === -1 && txt.indexOf('}}') === -1) {
+                el.style.display = 'block';
+            }
+        }
+        if (typeof onInputPassword === 'function') onInputPassword();
+    })();
+    </script>
+    </body>
+    </html>
+
+

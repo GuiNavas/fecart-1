@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar | VerdeTech</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .auth-page{background:#f9f9f9}
+        .auth-container{max-width:460px;margin:32px;background:#fff;border-radius:12px;padding:28px;color:#0d3010;box-shadow:0 8px 22px rgba(0,0,0,.12);border:2px solid #1a5b1f}
+        .auth-main{display:flex;justify-content:center;align-items:center;min-height:calc(100vh - 200px);}
+        .auth-container h1{margin:0 0 8px 0}
+        .auth-container p.helper{margin:0 0 16px 0;color:#2c4730}
+        .auth-container form{display:flex;flex-direction:column;gap:14px}
+        .auth-container label{font-weight:600}
+        .auth-container input{padding:12px;border-radius:10px;border:2px solid #1a5b1f;background:#fff;color:#0d3010}
+        .auth-container input::placeholder{color:#567a5a}
+        .auth-container input:focus{outline:none;border-color:#2f9e44;box-shadow:0 0 0 3px rgba(47,158,68,.18)}
+        .auth-container .error{background:#ffebee;color:#8a1c1c;padding:10px;border-radius:8px;border:1px solid #e57373}
+        .auth-container .btn{background:transparent;color:#0d3010;border:2px solid #1a5b1f;border-radius:10px;padding:12px;cursor:pointer;text-align:center}
+        .auth-container .btn:hover{background:#eaf5ec}
+        .btn-row{display:flex;gap:12px}
+        .input-group{position:relative}
+        .toggle-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:transparent;color:#1a5b1f;border:none;border-radius:0;width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+        .toggle-eye i{font-size:18px;line-height:1}
+        .toggle-eye:focus{outline:none;box-shadow:0 0 0 3px rgba(47,158,68,.18)}
+        .text-center{text-align:center}
+        a.link{color:#1a5b1f}
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-page">
+    <header>
+        <div class="logo-container">
+            <a href="/" title="Voltar ao início"><img src="imagens/logo.png" alt="Logo Verde Tech" class="logo"></a>
+        </div>
+        <nav>
+            <a href="/"><i class="fas fa-home"></i> Início</a>
+            <a href="/minha-conta"><i class="fas fa-user-circle"></i> Minha conta</a>
+        </nav>
+    </header>
+    <main class="auth-main">
+        <div class="auth-container">
+            <h1>Entrar</h1>
+            <p class="helper">Acesse com seu e-mail e senha.</p>
+            <div class="error" id="error-box" style="display:none">{{ error }}</div>
+            <form id="form-login" method="POST" action="{{ url_for('login') }}">
+                <div>
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" value="{{ email or '' }}" required>
+                </div>
+                <div>
+                    <label for="password">Senha</label>
+                    <div class="input-group">
+                        <input type="password" id="password" name="password" required style="padding-right:50px;">
+                        <button type="button" id="togglePassword" class="toggle-eye" aria-label="Mostrar senha" title="Mostrar senha">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="btn-row" style="margin-top:6px;">
+                    <button type="submit" class="btn" style="width:100%">Entrar</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Verde Tech - Cidade Sustentável do Futuro - Desenvolvido por Guilherme Navasconi e Daniel Martins.</p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+    <script>
+    (function(){
+        var el = document.getElementById('error-box');
+        if (!el) return;
+        var txt = (el.textContent || '').trim();
+        if (txt && txt.indexOf('{{') === -1 && txt.indexOf('}}') === -1) {
+            el.style.display = 'block';
+        }
+        var btn = document.getElementById('togglePassword');
+        var input = document.getElementById('password');
+        if (btn && input) {
+            btn.addEventListener('click', function(){
+                var isPassword = input.getAttribute('type') === 'password';
+                input.setAttribute('type', isPassword ? 'text' : 'password');
+                var icon = btn.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('fa-eye');
+                    icon.classList.toggle('fa-eye-slash');
+                }
+                btn.setAttribute('aria-label', isPassword ? 'Ocultar senha' : 'Mostrar senha');
+                btn.setAttribute('title', isPassword ? 'Ocultar senha' : 'Mostrar senha');
+            });
+        }
+    })();
+    </script>
+    </body>
+    </html>
+
+

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados do Quiz | Verde Tech</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="quiz.css">
+    <style>
+        .results-wrap { max-width: 900px; margin: 40px auto; padding: 20px; }
+        .answers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+        .answer-card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; background: #fff; }
+        .answer-card.correct { border-color: #16a34a33; background: #f0fdf4; }
+        .answer-card.incorrect { border-color: #dc262633; background: #fef2f2; }
+        .answer-title { font-weight: 700; margin-bottom: 8px; }
+        .answer-meta { font-size: 14px; color: #6b7280; }
+        .score-hero { display:flex; align-items:center; gap:16px; margin-bottom: 24px; }
+        .score-circle { width:96px; height:96px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:#e5f9e7; color:#065f46; font-size:28px; font-weight:800; }
+        .btn-row { display:flex; gap:12px; margin-top: 16px; flex-wrap: wrap; }
+        .btn { padding: 10px 16px; border-radius: 8px; background:#10b981; color:#fff; text-decoration:none; display:inline-flex; align-items:center; gap:8px; }
+        .btn.secondary { background:#111827; }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let payload = null;
+            try { payload = JSON.parse(localStorage.getItem('quizResults') || 'null'); } catch(e) {}
+            if (!payload) {
+                document.getElementById('content').innerHTML = '<p>Sem resultados do quiz. Faça o <a href="quiz.html">quiz</a> primeiro.</p>';
+                return;
+            }
+            const { score, total, userAnswers, questions } = payload;
+            fetch('/api/me').then(r=>r.json()).then(me => {
+                const name = me && me.authenticated ? (me.nome || me.username) : '';
+                if (name) {
+                    const hero = document.querySelector('.hero h1');
+                    if (hero) hero.textContent = `Parabéns, ${name}!`;
+                }
+            }).catch(()=>{});
+            document.getElementById('score-val').textContent = score + '/' + total;
+            document.getElementById('pct-val').textContent = Math.round((score/total)*100) + '%';
+
+            const grid = document.getElementById('answers-grid');
+            grid.innerHTML = '';
+            questions.forEach((q, idx) => {
+                const ans = userAnswers[idx];
+                const isCorrect = ans === q.correct;
+                const card = document.createElement('div');
+                card.className = 'answer-card ' + (isCorrect ? 'correct' : 'incorrect');
+                card.innerHTML = `
+                    <div class="answer-title">${idx+1}. ${q.question}</div>
+                    <div class="answer-meta"><strong>Sua resposta:</strong> ${ans != null ? q.options[ans] : 'Não respondida'}</div>
+                    ${!isCorrect ? `<div class="answer-meta"><strong>Correta:</strong> ${q.options[q.correct]}</div>` : ''}
+                `;
+                grid.appendChild(card);
+            });
+        });
+    </script>
+    
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="imagens/logo.png" alt="Logo Verde Tech - Voltar ao Início" class="logo">
+        </div>
+        <nav>
+            <a href="index.html"><i class="fas fa-home"></i> Início</a>
+            <a href="curiosidades.html"><i class="fas fa-robot"></i> Curiosidades</a>
+            <a href="maquete.html"><i class="fas fa-project-diagram"></i> Maquete</a>
+            <a href="carbono.html"><i class="fas fa-calculator"></i> Calculadora</a>
+        </nav>
+        <img src="imagens/verdetech.logo.png" alt="Logo Secundária" class="logo-right">
+    </header>
+
+    <div class="hero">
+        <h1>Resultados do Quiz</h1>
+        <p>Veja seus acertos e os temas para revisar.</p>
+    </div>
+
+    <main>
+        <div class="results-wrap" id="content">
+            <div class="score-hero">
+                <div class="score-circle" id="pct-val">0%</div>
+                <div>
+                    <h2 id="score-val">0/10</h2>
+                    <div class="btn-row">
+                        <a class="btn" href="quiz.html"><i class="fas fa-redo"></i> Refazer quiz</a>
+                        <a class="btn secondary" href="explicacoes.html"><i class="fas fa-book"></i> Aprender mais</a>
+                    </div>
+                </div>
+            </div>
+            <div class="answers-grid" id="answers-grid"></div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Verde Tech - Cidade Sustentável do Futuro - Desenvolvido por Guilherme Navasconi e Daniel Martins.</p>
+        </div>
+    </footer>
+</body>
+</html>
+

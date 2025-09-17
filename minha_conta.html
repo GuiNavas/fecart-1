@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha conta</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <a href="/"><img src="imagens/logo.png" alt="Logo Verde Tech - Voltar ao Início" class="logo"></a>
+        </div>
+        <nav>
+            <a href="/"><i class="fas fa-home"></i> Início</a>
+            <a href="/curiosidades"><i class="fas fa-robot"></i> Curiosidades</a>
+            <a href="/maquete"><i class="fas fa-project-diagram"></i> Maquete</a>
+            <a href="/carbono"><i class="fas fa-calculator"></i> Calculadora</a>
+        </nav>
+        <a href="/minha-conta" title="Minha conta"><img src="imagens/verdetech.logo.png" alt="Minha conta" class="logo-right"></a>
+    </header>
+    <main>
+        <section style="max-width:720px;margin:24px auto;background:#0d3010;color:#fff;border-radius:12px;padding:20px;">
+            <h1 style="margin-top:0">Minha conta</h1>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+                <div><strong>Nome:</strong> {{ usuario.nome }}</div>
+                <div><strong>E-mail:</strong> {{ email }}</div>
+                <div><strong>Desde:</strong> {{ usuario.data_cadastro.strftime('%d/%m/%Y') if usuario and usuario.data_cadastro else '' }}</div>
+            </div>
+            <div style="margin-top:16px;display:flex;gap:10px;">
+                <a class="btn" href="/carbono"><i class="fas fa-calculator"></i> Ver minha calculadora</a>
+                <a class="btn" href="/quiz"><i class="fas fa-question"></i> Ir para o quiz</a>
+                <a class="btn" href="/logout"><i class="fas fa-sign-out-alt"></i> Sair</a>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Verde Tech - Cidade Sustentável do Futuro - Desenvolvido por Guilherme Navasconi e Daniel Martins.</p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
+
+
